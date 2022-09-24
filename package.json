@@ -1,5 +1,5 @@
 {
-    "name": "pls-storage",
+    "name": "@pcrab/pblive-cli",
     "version": "0.0.1",
     "description": "A simple typescript library to enhance browser local/session storage",
     "license": "MIT",
