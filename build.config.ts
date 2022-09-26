@@ -9,7 +9,4 @@ export default defineBuildConfig({
     // Generates .d.ts declaration file
     declaration: true,
     clean: true,
-    rollup: {
-        emitCJS: true,
-    },
 });
