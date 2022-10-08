@@ -1,8 +1,7 @@
-import open from "@pcrab/pblive-lib";
 import { Command } from "commander";
+import saveRoom from "./save/index.js";
+import openRoom from "./open/index.js";
 import pkg from "../package.json";
-import onDanmuMsg from "./open/danmu.js";
-import onSendGift from "./open/gift.js";
 
 const program = new Command();
 program
@@ -13,25 +12,27 @@ program
 program
     .command("save")
     .description("Save all danmus")
-    .argument("<path>")
-    .action((savePath) => {
-        if (typeof savePath !== "string") return;
+    .option("-p, --path [savePath]", "specific save path")
+    .argument("<roomid>")
+    .action((roomidStr: string, opts: { path?: string }) => {
+        if (typeof roomidStr !== "string") return;
+        const roomid = parseInt(roomidStr) || NaN;
+        if (!roomid)
+            throw Error(`Wrong roomid format! expect number, given ${roomid}`);
+        const savePath = opts?.path || ".";
+        saveRoom(roomid, savePath);
     });
 
 program
     .command("open")
     .description("Open bilibili live")
     .argument("<roomid>")
-    .action((str) => {
-        if (typeof str !== "string") return;
-        const roomid = parseInt(str) || NaN;
+    .action((roomidStr) => {
+        if (typeof roomidStr !== "string") return;
+        const roomid = parseInt(roomidStr) || NaN;
         if (!roomid)
             throw Error(`Wrong roomid format! expect number, given ${roomid}`);
-        open(roomid, {
-            onDanmuMsg,
-            onSendGift,
-        });
-        console.log(`roomid: ${str}`);
+        openRoom(roomid);
     });
 
 program.parse();
